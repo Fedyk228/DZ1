@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\User;
 use Yii;
+use app\models\User;
 
 use yii\web\Controller;
 
@@ -23,12 +23,13 @@ class UserController extends Controller
         $success = '';
 
         if ($model->load(Yii::$app->request->post())) {
+
             $exist = User::find()->where(['email' => $model->email])->asArray()->one();
 
-            if (Yii::$app->request->post('user')['password'] != Yii::$app->request->post('r_password')) {
+            if (Yii::$app->request->post('User')['password'] != Yii::$app->request->post('r_password')) {
                 $err = 'Repeat password incorrect';
-            } else {
-                $model->date_create = Data('d.m.Y - H:i');
+            } elseif (!$exist){
+                $model->date_create = Date('d.m.Y - H:i');
                 $model->password = md5($model->password);
 
                 if ($model->save()) {
@@ -38,6 +39,9 @@ class UserController extends Controller
                     $err = 'error';
                 }
             }
+
+        } else {
+            $err = 'This email it exist';
         }
 
         return $this->render('register', ['model' => $model, 'err' => $err, 'success' => $success]);

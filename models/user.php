@@ -14,8 +14,8 @@ class User extends ActiveRecord
     public function rules()
     {
         return[
-          [['email'], 'required', 'massage' => 'Email filed required'],
-          [['password'], 'required', 'massage' => 'Password filed required'],
+          [['email'], 'required', 'message' => 'Email filed required'],
+          [['password'], 'required', 'message' => 'Password filed required'],
           ['email', 'email'],
           ['phone', 'string'],
           ['fio', 'string'],
