@@ -6,6 +6,7 @@ use Yii;
 use app\models\User;
 use yii\web\Controller;
 use yii\web\Cookie;
+use app\models\Post;
 
 
 class UserController extends Controller
@@ -13,7 +14,26 @@ class UserController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new Post();
+        $err = '';
+        $exist = self::checkLogin();
+
+        if ($exist) {
+            $posts = Post::find()->where(['id_author' => $exist['uid']])->orderBy(['id' => SORT_DESC])->asArray()->all();
+            if ($model->load(Yii::$app->request->post())){
+                $model->date_create = Date('d.m.Y - H:i');
+                $model->id_author = $exist['uid'];
+
+                if ($model->save()):
+                    $this->goBack($_SERVER['REQUEST_URI']);
+
+                else:
+                    $err = 'Add review error';
+                endif;
+            }
+        }
+
+        return $this->render('index', ['model' => $model, 'err' => $err, 'exist' => $exist, 'posts' => $posts]);
     }
 
     public function actionRegister()
