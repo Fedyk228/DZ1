@@ -32,7 +32,7 @@ use yii\web\Controller;
             </div>
 
             <div>
-                <button class="btn btn-success">Add post</button>
+                <button class="btn" style="background: rgba(255,250,0,0.9)">Add post</button>
             </div>
             <?php ActiveForm::end(); ?>
             <p class="text-danger"><?= $err ?></p>
@@ -54,6 +54,14 @@ use yii\web\Controller;
                     <div>
                         <em class="text-primary"><?= $post['date_create']?></em>
                         <h4><?= $post['title']?></h4>
+                    </div>
+
+                    <div>
+                        <?php $form = ActiveForm::begin();?>
+
+                        <a href="/web/user/post-edit/<?= $post['id']; ?>" class="btn" style="background: rgba(255,250,0,0.9)">Edit</a>
+                        <butthon class=" btn btn-danger">Remove</butthon>
+                        <?php ActiveForm::end(); ?>
                     </div>
                 </div>
         <?php endif;?>

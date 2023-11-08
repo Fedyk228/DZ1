@@ -20,7 +20,7 @@ class UserController extends Controller
 
         if ($exist) {
             $posts = Post::find()->where(['id_author' => $exist['uid']])->orderBy(['id' => SORT_DESC])->asArray()->all();
-            if ($model->load(Yii::$app->request->post())){
+            if ($model->load(Yii::$app->request->post())) {
                 $model->date_create = Date('d.m.Y - H:i');
                 $model->id_author = $exist['uid'];
 
@@ -106,13 +106,39 @@ class UserController extends Controller
         $this->goBack('/web/user');
     }
 
-     public function actionLogout()
+    public function actionLogout()
     {
         $cookies = Yii::$app->response->cookies;
         $cookies->remove('auth_key');
 
         return $this->goBack('/web/user/login');
     }
+
+    public function actionPostEdit()
+    {
+        $exist = self::checkLogin();
+        if (!$exist) {
+            $this->goBack('/web/user/login');
+        }
+
+        $success = '';
+        $err = '';
+
+        $model = post::find()->where(['id' => Yii::$app->request->get('id'), 'id_author' => $exist['uid']])->one();
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->save())
+                $success = 'Save review success';
+            else
+                $err = 'Save review error';
+
+        }
+        return $this->render('post-edit', ['model' => $model,'success' => $success, 'err' => $err]);
+
+    }
+
+
     static public function checkLogin()
     {
         $cookies = Yii::$app->request->cookies;
