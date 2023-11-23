@@ -31,6 +31,14 @@ class UserController extends Controller
                     $err = 'Add review error';
                 endif;
             }
+            if (Yii::$app->request->post('id')) {
+
+                $post = Post::find()->where(['id' => Yii::$app->request->post('id'), 'id_author' => $exist['uid']])->one();
+
+                if ($post->delete())
+                    $this->goBack($_SERVER['REQUEST_URI']);
+            }
+
         }
 
         return $this->render('index', ['model' => $model, 'err' => $err, 'exist' => $exist, 'posts' => $posts]);

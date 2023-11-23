@@ -9,7 +9,7 @@ use yii\web\Controller;
 
 ?>
 
-<?php if ($exist) : ?>
+
     <h1>Cabinet - Reviews</h1>
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
@@ -37,11 +37,8 @@ use yii\web\Controller;
             <?php ActiveForm::end(); ?>
             <p class="text-danger"><?= $err ?></p>
         </div>
-    </div> <?php else : ?>
-    <div class="py-3">
-        <a href="/web/user/login" class="btn btn-primary"> Pls Login</a>
     </div>
-<?php endif; ?>
+
 
 <hr>
 
@@ -58,10 +55,10 @@ use yii\web\Controller;
 
                     <div>
                         <?php $form = ActiveForm::begin();?>
-
+                        <input type="hidden" name="id" value="<?= $post['id'];?>">
                         <a href="/web/user/post-edit/<?= $post['id']; ?>" class="btn" style="background: rgba(255,250,0,0.9)">Edit</a>
-                        <butthon class=" btn btn-danger">Remove</butthon>
-                        <?php ActiveForm::end(); ?>
+                        <button class=" btn btn-danger">Remove</button>
+                        <?php $form = ActiveForm::end(); ?>
                     </div>
                 </div>
         <?php endif;?>
