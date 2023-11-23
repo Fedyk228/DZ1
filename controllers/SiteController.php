@@ -2,20 +2,29 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+
+use app\models\Post;
 
 class SiteController extends Controller
 {
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $posts = Post::find()->asArray()->all();
+
+        return $this->render('index', ['posts' => $posts]);
     }
+
+    public function actionItem()
+    {
+        $items = Post::find()->select('*')->innerJoin(User::tableName(),Post::tableName() . '.id_author = ' . User::tableName() . '.uid')->where(['id' => Yii::$app->request->get('id')])->asArray()->all();
+        $user = UserController::checkLogin();
+
+        return $this->render('item', ['items' => $items, 'user' => $user]);
+    }
+
 
 }
