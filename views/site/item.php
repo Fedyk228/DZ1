@@ -1,15 +1,14 @@
 <?php
 /* @var controllers\SiteController $items */
 /* @var controllers\SiteController $user */
+/* @var controllers\SiteController $login */
+/* @var controllers\SiteController $model */
+/* @var controllers\SiteController $comments */
+
+use yii\bootstrap5\ActiveForm;
+
 ?>
 
-
-
-<?php
-echo '<pre>';
-print_r($items);
-echo '</pre>';
-?>
 
 <div class="py-3">
     <a href="/web/site" class="btn" style="background: rgba(255,250,0,0.9)">Go back</a>
@@ -36,6 +35,34 @@ echo '</pre>';
 
 <?php endforeach; ?>
 
+<hr>
+
+<h4>Comments</h4>
+<?php if ($login): ?>
+    <?php $form = ActiveForm::begin() ?>
+    <div class="py-1 col-md-6">
+        <?= $form->field($model, 'comment_text')->textInput() ?>
+    </div>
+
+    <div class="py-1">
+        <button class="btn" style="background: rgba(255,250,0,0.9)"> Add Comment</button>
+    </div>
+    <?php ActiveForm::end() ?>
+<?php endif ?>
+
+<?php if (isset($comments)): ?>
+<div class="list-group mt-5">
+    <?php foreach ($comments as $comment): ?>
+        <div class="list-group-item">
+            <h5><?= $comment['fio']; ?></h5>
+            <p><?= $comment['comment_text']; ?></p>
+
+        </div>
+    <? endforeach ?>
+</div>
+<?php else :?>
+    <h2 class="text-muted">Comments not found</h2>
+<?php endif;?>
 
 
 
